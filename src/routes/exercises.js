@@ -7,16 +7,17 @@ const {
   deleteExercise
 } = require('../controllers/exerciseController');
 const { protect } = require('../middleware/auth');
+const { apiLimiter } = require('../middleware/rateLimiter');
 
 const router = express.Router();
 
 router.route('/')
-  .get(protect, getExercises)
-  .post(protect, createExercise);
+  .get(apiLimiter, protect, getExercises)
+  .post(apiLimiter, protect, createExercise);
 
 router.route('/:id')
-  .get(protect, getExercise)
-  .put(protect, updateExercise)
-  .delete(protect, deleteExercise);
+  .get(apiLimiter, protect, getExercise)
+  .put(apiLimiter, protect, updateExercise)
+  .delete(apiLimiter, protect, deleteExercise);
 
 module.exports = router;

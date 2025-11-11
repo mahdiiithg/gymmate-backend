@@ -8,18 +8,19 @@ const {
   completeWorkout
 } = require('../controllers/workoutController');
 const { protect } = require('../middleware/auth');
+const { apiLimiter } = require('../middleware/rateLimiter');
 
 const router = express.Router();
 
 router.route('/')
-  .get(protect, getWorkouts)
-  .post(protect, createWorkout);
+  .get(apiLimiter, protect, getWorkouts)
+  .post(apiLimiter, protect, createWorkout);
 
 router.route('/:id')
-  .get(protect, getWorkout)
-  .put(protect, updateWorkout)
-  .delete(protect, deleteWorkout);
+  .get(apiLimiter, protect, getWorkout)
+  .put(apiLimiter, protect, updateWorkout)
+  .delete(apiLimiter, protect, deleteWorkout);
 
-router.put('/:id/complete', protect, completeWorkout);
+router.put('/:id/complete', apiLimiter, protect, completeWorkout);
 
 module.exports = router;
