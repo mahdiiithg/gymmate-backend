@@ -9,7 +9,11 @@ A RESTful API backend for a gym and fitness tracking application built with Node
 - Workout tracking and management
 - Role-based access control (User, Trainer, Admin)
 - Secure password hashing with bcryptjs
-- Input validation and error handling
+- Comprehensive input validation with express-validator
+- Rate limiting to prevent abuse
+- NoSQL injection protection
+- CORS configuration with origin whitelisting
+- Security headers with Helmet
 - MongoDB integration with Mongoose
 
 ## Prerequisites
@@ -130,6 +134,38 @@ The API uses JWT (JSON Web Tokens) for authentication. Include the token in the 
 ```
 Authorization: Bearer <your_jwt_token>
 ```
+
+## Security Features
+
+This backend implements multiple layers of security:
+
+### Rate Limiting
+- **Authentication endpoints**: 5 requests per 15 minutes per IP
+- **General API endpoints**: 100 requests per 15 minutes per IP
+- Prevents brute force attacks and API abuse
+
+### Input Validation
+- All inputs are validated using express-validator
+- Email format validation
+- MongoDB ObjectId validation
+- Required fields enforcement
+- Data type and range validation
+
+### NoSQL Injection Prevention
+- express-mongo-sanitize removes dangerous query operators
+- Input validation prevents malicious data entry
+- Parameterized queries through Mongoose
+
+### CORS Protection
+- Configurable origin whitelist (comma-separated in .env)
+- Credentials support enabled
+- No wildcards in production
+
+### Other Security Measures
+- Helmet.js for secure HTTP headers
+- Bcrypt for password hashing (salt rounds: 10)
+- JWT tokens with configurable expiration
+- Secure email regex (no ReDoS vulnerability)
 
 ## Error Handling
 
